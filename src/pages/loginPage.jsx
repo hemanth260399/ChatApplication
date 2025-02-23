@@ -53,7 +53,7 @@ export let Login = () => {
                         />
 
                         <p className="mt-4 text-sm text-gray-400">
-                            By logging in, you agree to our Terms and Conditions.
+                            By logging in, you agree to our Terms and Conditions .
                         </p>
                     </div>
                 </div>
