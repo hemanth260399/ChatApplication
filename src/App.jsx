@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { store } from './additional/store';
 import { UserPage } from './pages/userPage';
 import Navbar from './pages/navBar';
+import { NotFound } from './pages/notFound';
 function App() {
   let PrivateRouter = ({ component }) => {
     let isAuth = Boolean(localStorage.getItem("userInfo"))
@@ -26,7 +27,7 @@ function App() {
               <Route path="/chatArea" element={<PrivateRouter component={<ChatPage />} />} />
             </Route>
             <Route path="/" element={<Login />} />
-            <Route path="*" element={<Navigate to={"/"} />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </Provider >
