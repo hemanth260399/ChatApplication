@@ -31,7 +31,6 @@ export let Login = () => {
     }
     useEffect(() => {
         if (userdata.autenctionState) {
-            console.log(userdata.autenctionState)
             navigate("/alluser")
         }
     }, [])

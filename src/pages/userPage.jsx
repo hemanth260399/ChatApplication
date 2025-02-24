@@ -2,11 +2,13 @@ import { useEffect, useState } from "react"
 import { allUserApi } from "../API/userAPI"
 import { useNavigate } from "react-router-dom"
 import { Loader } from "./loading"
+import { useSelector } from "react-redux"
 
 export let UserPage = () => {
     let navigate = useNavigate()
     let [user, setuser] = useState([])
     let [loading, setLoading] = useState(true)
+    const userdata = useSelector((state) => state.ReduxData)
     useEffect(() => {
         let getData = async () => {
             try {
@@ -24,6 +26,11 @@ export let UserPage = () => {
     let goToChat = (data) => {
         navigate(`/chatArea?id=${data}&chat=single`)
     }
+    useEffect(() => {
+        if (!userdata.autenctionState) {
+            navigate("/")
+        }
+    }, [])
     return (
         <>
             <div className="flex flex-wrap bg-cyan-200 justify-between">

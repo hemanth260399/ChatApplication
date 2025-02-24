@@ -69,6 +69,11 @@ export let ChatPage = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    useEffect(() => {
+        if (!userdata.autenctionState) {
+            navigate("/")
+        }
+    }, [])
     return (
         <>
             <div className="h-[92vh] flex justify-center items-start bg-cyan-100">
