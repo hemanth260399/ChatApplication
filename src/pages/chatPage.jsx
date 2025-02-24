@@ -4,13 +4,15 @@ import { io } from "socket.io-client";
 import { allChatAPI } from "../API/LoginAPI";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { SingleChatApi } from "../API/userAPI";
-let socket = io("http://localhost:7777/chatbox")
+import { Loader } from "./loading";
+let socket = io(`${import.meta.env.VITE_BE_URL}/chatbox`)
 export let ChatPage = () => {
     let navigate = useNavigate()
     let [params] = useSearchParams()
     const messageEndRef = useRef(null);
     const userdata = useSelector((state) => state.ReduxData)
     const [messages, setMessages] = useState([]);
+    let [loading, setloading] = useState(false)
     const [inputMessage, setInputMessage] = useState('');
     const handleSendMessage = (chatType) => {
         if (inputMessage.trim()) {
@@ -32,9 +34,12 @@ export let ChatPage = () => {
         if (params.get("chat") === "single") {
             let singleData = async () => {
                 try {
+                    setloading(true);
                     let response = await SingleChatApi({ data: { personId1: params.get("id"), personId2: userdata.userInfo._id } })
+                    setloading(false);
                     setMessages(response.data)
                 } catch (err) {
+                    setloading(false);
                     alert(err)
                 }
             }
@@ -45,9 +50,12 @@ export let ChatPage = () => {
         } else {
             let getAllData = async () => {
                 try {
+                    setloading(true);
                     let response = await allChatAPI()
+                    setloading(false);
                     setMessages(response.data)
                 } catch (err) {
+                    setloading(false);
                     alert(err)
                 }
             }
@@ -110,6 +118,7 @@ export let ChatPage = () => {
                     </div>
                 </div>
             </div>
+            {loading && <Loader />}
         </>
     )
 }

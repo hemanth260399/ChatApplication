@@ -2,20 +2,25 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
 import { googleLoginAPI } from "../API/LoginAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Loader } from "./loading";
 
 export let Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const userdata = useSelector((state) => state.ReduxData)
+    let [loading, setloading] = useState(false)
     const responseGoogleSuccess = async (response) => {
         try {
+            setloading(true)
             let data = await googleLoginAPI(response)
             localStorage.setItem("userInfo", JSON.stringify(data.data))
             localStorage.setItem("token", JSON.stringify(data.token))
             dispatch({ type: "SET_USER_INFO", payload: data.data })
             navigate("/alluser")
+            setloading(false)
         } catch (err) {
+            setloading(false)
             console.error(err);
             alert('Failed to login with Google');
             return;
@@ -58,6 +63,7 @@ export let Login = () => {
                     </div>
                 </div>
             </GoogleOAuthProvider>
+            {loading && <Loader />}
         </>
     )
 }

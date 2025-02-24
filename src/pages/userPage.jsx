@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react"
 import { allUserApi } from "../API/userAPI"
 import { useNavigate } from "react-router-dom"
+import { Loader } from "./loading"
 
 export let UserPage = () => {
     let navigate = useNavigate()
     let [user, setuser] = useState([])
+    let [loading, setLoading] = useState(true)
     useEffect(() => {
         let getData = async () => {
             try {
+                setLoading(true)
                 let data = await allUserApi()
+                setLoading(false)
                 setuser(data.data)
             } catch (err) {
-                console.error(err)
+                setLoading(false)
+                alert(err)
             }
         }
         getData()
@@ -52,6 +57,7 @@ export let UserPage = () => {
                     </div>
                 </div>
             </div>
+            {loading && <Loader />}
         </>
     )
 }
